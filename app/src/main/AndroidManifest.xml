@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+      No INTERNET permission — by design. All relationship data stays on-device.
+      The database lives in app-private internal storage.
+    -->
+
+    <application
+        android:name=".CrmApplication"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AIBot"
+        android:allowBackup="false">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+          App Functions service — Android 16 EAP
+          The system binds this service when an AI agent (e.g. Gemini) invokes
+          one of the declared functions. The BIND_APP_FUNCTION_SERVICE permission
+          ensures only the platform can bind it.
+          Functions are declared in res/xml/app_functions.xml.
+        -->
+        <service
+            android:name=".functions.CrmAppFunctionService"
+            android:exported="true"
+            android:permission="android.permission.BIND_APP_FUNCTION_SERVICE">
+            <intent-filter>
+                <action android:name="android.app.function.AppFunctionService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.function.APP_FUNCTIONS"
+                android:resource="@xml/app_functions" />
+        </service>
+
+    </application>
+
+</manifest>

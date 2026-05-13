@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  App Functions schema — Android 16 EAP (androidx.appfunctions 1.0.0-alpha)
+  Gemini and other on-device AI agents discover these functions via the
+  AppFunctionManager and dispatch calls to CrmAppFunctionService.
+  All data stays on-device; no network permission is declared.
+-->
+<appfunctions>
+
+    <function android:id="logInteraction"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <display-name>Log Interaction</display-name>
+        <description>
+            Record an interaction with a person. Captures free-form notes plus
+            structured needs and wants so they can be retrieved later by any
+            AI agent via getRelationshipContext.
+        </description>
+        <parameters>
+            <parameter
+                android:name="person"
+                android:type="string"
+                android:required="true"
+                android:description="Full name or identifier of the person you interacted with" />
+            <parameter
+                android:name="notes"
+                android:type="string"
+                android:required="false"
+                android:description="Free-form notes about what was discussed" />
+            <parameter
+                android:name="needs"
+                android:type="string"
+                android:required="false"
+                android:description="What this person needs from you or others right now" />
+            <parameter
+                android:name="wants"
+                android:type="string"
+                android:required="false"
+                android:description="What this person wants — aspirations, preferences, wishes" />
+            <parameter
+                android:name="timestamp"
+                android:type="long"
+                android:required="false"
+                android:description="Unix epoch milliseconds of the interaction; defaults to now" />
+        </parameters>
+        <return-value android:type="string"
+            android:description="JSON confirmation with interactionId and personId" />
+    </function>
+
+    <function android:id="getRelationshipContext"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <display-name>Get Relationship Context</display-name>
+        <description>
+            Return the full relationship context for a person: contact details,
+            complete interaction history, aggregated needs and wants.
+            Ideal for answering questions like "What did I last talk to X about?"
+            or "What does my contractor need from me?"
+        </description>
+        <parameters>
+            <parameter
+                android:name="person"
+                android:type="string"
+                android:required="true"
+                android:description="Full name or identifier of the person to look up" />
+        </parameters>
+        <return-value android:type="string"
+            android:description="JSON object with person profile and interaction history" />
+    </function>
+
+</appfunctions>
